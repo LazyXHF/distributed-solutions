@@ -1,9 +1,13 @@
 package cn.xu.lock.demo;
 
+import cn.xu.lock.demo.zookeeper.ExtLock;
+import cn.xu.lock.demo.zookeeper.ZookeeperAbstractLock;
+import cn.xu.lock.demo.zookeeper.ZookeeperDistrbuteLock;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.SimpleTimeZone;
-import java.util.UUID;
+import java.util.List;
 
 /**
  * @author ~许小桀
@@ -12,21 +16,26 @@ import java.util.UUID;
  */
 public class SingleLock  implements Runnable{
 
-    private static int count=0;
-
-    //使用synchronized 实现单机版本的而线程安全或者使用lock锁
-    public synchronized static String getId(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        return  simpleDateFormat.format(new Date())+count++;
-    }
+    Number number = new Number();
+    ExtLock lock = new ZookeeperDistrbuteLock();
 
     @Override
     public void run() {
         getNumber();
     }
 
-    public    void getNumber(){
-        System.out.println(Thread.currentThread().getName()+"number"+getId());
+    public  void getNumber(){
+
+        try {
+            lock.getLock();
+            System.out.println(Thread.currentThread().getName()+"number"+number.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            lock.unLock();
+        }
+
+
     }
 
     public static void main(String[] args) {
