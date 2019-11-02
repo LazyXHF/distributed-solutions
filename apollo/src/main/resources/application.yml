@@ -1,0 +1,9 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: springboot-abl
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.43.110:8080/eureka
