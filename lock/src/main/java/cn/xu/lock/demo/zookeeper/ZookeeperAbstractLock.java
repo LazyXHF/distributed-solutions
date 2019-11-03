@@ -1,7 +1,6 @@
 package cn.xu.lock.demo.zookeeper;
 
 import org.I0Itec.zkclient.ZkClient;
-import org.springframework.cache.CacheManager;
 
 /**
  * @author ~许小桀
